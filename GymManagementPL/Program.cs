@@ -22,7 +22,14 @@ namespace GymManagementPL
 
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped<IMemberRepository, MemberRepository>();
             builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
+            builder.Services.AddScoped<IPlanReposatory, PlanRepository>();
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IHealthRecordRepository , HealthRecordRepository>();
+
+            builder.Services.AddScoped<IPlanReposatory, IPlanReposatory>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

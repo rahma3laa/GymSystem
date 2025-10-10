@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Repostiories.Classes
 {
-    internal class MemberRepository : IMemberRepository
+    public class MemberRepository : IMemberRepository
     {
         // private readonly GymDbContext _dbContext = new GymDbContext();
 
@@ -20,8 +20,6 @@ namespace GymManagementDAL.Repostiories.Classes
         {
             _dbContext = dbContext;
         }
-
-        public GymDbContext DbContext { get; }
 
         public int? Add(Member member)
         {

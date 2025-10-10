@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Repostiories.Interfaces
 {
-    internal interface IMemberRepository
+    public interface IMemberRepository
     {
         //Get All
         IEnumerable<Member> GetAll();
