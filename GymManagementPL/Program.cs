@@ -1,4 +1,3 @@
-//Zoz
 using GymManagementDAL.Data.Context;
 using GymManagementDAL.Repostiories.Classes;
 using GymManagementDAL.Repostiories.Interfaces;
