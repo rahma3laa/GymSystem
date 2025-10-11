@@ -1,3 +1,4 @@
+//Zoz
 using GymManagementDAL.Data.Context;
 using GymManagementDAL.Repostiories.Classes;
 using GymManagementDAL.Repostiories.Interfaces;
@@ -22,10 +23,7 @@ namespace GymManagementPL
 
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddScoped<IMemberRepository, MemberRepository>();
-            builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
-            builder.Services.AddScoped<IPlanReposatory, PlanRepository>();
-            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+           
            
 
             builder.Services.AddScoped<IPlanReposatory, IPlanReposatory>();
