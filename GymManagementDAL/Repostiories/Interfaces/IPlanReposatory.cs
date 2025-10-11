@@ -11,12 +11,10 @@ namespace GymManagementDAL.Repostiories.Interfaces
     {
         IEnumerable<Plan> GetAll();
 
-        Plan GetById(int Id);
-
-        int Add(Plan plan);
+        Plan? GetById(int Id);
 
         int Update(Plan plan);
 
-        int Delete(Plan plan);
+       
     }
 }
