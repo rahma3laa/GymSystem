@@ -1,4 +1,5 @@
 ﻿using GymManagementBLL.ViewModels.MemberViewModels;
+using GymManagementDAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace GymManagementBLL.Services.Interface
 
         //Get
         MemberViewModel? GetMemberDetails(int MemberId);
+
+        HealthRecordViewModel? GetHealthRecordViewModel(int MemberId);
     }
 }
