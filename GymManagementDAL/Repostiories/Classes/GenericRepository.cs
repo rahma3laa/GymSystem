@@ -18,18 +18,11 @@ namespace GymManagementDAL.Repostiories.Classes
             _dbContext = dbContext;
             
         }
-        public int Add(TEntity entity)
-        {
-            //_dbContext.Add(entity);
-            _dbContext.Set<TEntity>().Add(entity);
-            return _dbContext.SaveChanges();
-        }
+        public void Add(TEntity entity) => _dbContext.Set<TEntity>().Add(entity);
+        //_dbContext.Add(entity);
 
-        public int Delete(TEntity entity)
-        {
-           _dbContext.Set<TEntity>().Remove(entity);
-            return _dbContext.SaveChanges();
-        }
+
+        public void Delete(TEntity entity) => _dbContext.Set<TEntity>().Remove(entity);
 
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null)
         {
@@ -41,10 +34,9 @@ namespace GymManagementDAL.Repostiories.Classes
 
         public TEntity? GetById(int Id) => _dbContext.Set<TEntity>().Find(Id);
 
-        public int Update(TEntity entity)
-        {
-            _dbContext.Set<TEntity>().Update(entity);
-            return _dbContext.SaveChanges();
-        }
+        public void Update(TEntity entity) => _dbContext.Set<TEntity>().Update(entity);
+        
+            
+         
     }
 }

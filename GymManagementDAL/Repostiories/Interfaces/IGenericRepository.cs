@@ -14,10 +14,10 @@ namespace GymManagementDAL.Repostiories.Interfaces
 
         TEntity? GetById(int Id);
 
-        int Add(TEntity entity);
-        int Update(TEntity entity);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
 
-        int Delete(TEntity entity);
+        void Delete(TEntity entity);
     }
 
 }
