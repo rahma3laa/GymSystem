@@ -16,15 +16,19 @@ namespace GymManagementBLL.Classes
         private readonly IGenericRepository<MemberShip> _memberShipRepository;
         private readonly IPlanReposatory _planReposatory;
         private readonly IGenericRepository<HealthRecord> _healthRecordRepository;
+        private readonly IGenericRepository<MemberSession> _memberSessionRepository;
 
         public MemberService(IGenericRepository<Member> MemberRepository , 
             IGenericRepository<MemberShip> MemberShipRepository , 
-            IPlanReposatory planReposatory , IGenericRepository<HealthRecord> HealthRecordRepository)
+            IPlanReposatory planReposatory , 
+            IGenericRepository<HealthRecord> HealthRecordRepository , 
+            IGenericRepository<MemberSession> memberSessionRepository)
         {
             _MemberRepository = MemberRepository;
             _memberShipRepository = MemberShipRepository;
             _planReposatory = planReposatory;
             _healthRecordRepository = HealthRecordRepository;
+            _memberSessionRepository = memberSessionRepository;
         }
 
         public bool CreateMember(CreateMemberViewModel createdMember)
@@ -167,6 +171,34 @@ namespace GymManagementBLL.Classes
                 City = Member.Address.City,
                 Street = Member.Address.Street
             };
+        }
+
+        public bool RemoveMember(int MemberId)
+        {
+            var Member = _MemberRepository.GetById(MemberId);
+            if(Member is null) return false;
+
+            var HasActiveMemberSessions = _memberSessionRepository
+                      .GetAll(X => X.MemberId == MemberId && X.Session.StartDate > DateTime.Now).Any();
+
+            if (HasActiveMemberSessions) return false;
+            var MemberShips = _memberShipRepository.GetAll(X=>X.MemberId == MemberId);
+            try
+            {
+                if (MemberShips.Any())
+                {
+                    foreach(var membership in MemberShips)
+                    {
+                        _memberShipRepository.Delete(membership);
+                    }
+                }
+               return _MemberRepository.Delete(Member) > 0;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
 
         public bool UpdateMemberDetails(int Id, MemberToUpdateViewModel UpdatedMember)
