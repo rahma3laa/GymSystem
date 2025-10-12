@@ -18,7 +18,52 @@ namespace GymManagementBLL.Classes
             _MemberRepository = MemberRepository;
         }
 
-       
+        public bool CreateMember(CreateMemberViewModel createdMember)
+        {
+
+            try
+            {
+                //Check Phone Is Exist
+                var emailExists = _MemberRepository.GetAll(X => X.Email == createdMember.Email).Any();
+                //if (emailExists) return false;
+
+                //Check Email Is Exist
+                var phoneCheck = _MemberRepository.GetAll(X => X.Phone == createdMember.Phone).Any();
+
+                //If one of them exists return false 
+                if (emailExists || phoneCheck) return false;
+
+                //if not add member and return true
+                var member = new Member()
+                {
+                    Name = createdMember.Name,
+                    Email = createdMember.Email,
+                    Phone = createdMember.Phone,
+                    DateOfBirth = createdMember.DateOfBirth,
+                    Gender = createdMember.Gender,
+                    Address = new Address()
+                    {
+                        BuildingNumber = createdMember.BuildingNumber,
+                        City = createdMember.City,
+                        Street = createdMember.Street,
+                    },
+                    HealthRecord = new HealthRecord()
+                    {
+                        Height = createdMember.HealthRecordViewModel.Height,
+                        weight = createdMember.HealthRecordViewModel.Weight,
+                        BloodType = createdMember.HealthRecordViewModel.BloodType,
+                        Note = createdMember.HealthRecordViewModel.Note,
+                    }
+                };
+                return _MemberRepository.Add(member) > 0; //True 
+            }
+            catch (Exception )
+            {
+                return false;
+
+            }
+
+        }
 
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
