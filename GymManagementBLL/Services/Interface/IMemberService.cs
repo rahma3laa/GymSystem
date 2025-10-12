@@ -18,5 +18,9 @@ namespace GymManagementBLL.Services.Interface
         MemberViewModel? GetMemberDetails(int MemberId);
 
         HealthRecordViewModel? GetHealthRecordViewModel(int MemberId);
+
+        MemberToUpdateViewModel? GetMemberToUpdate(int MemberId);
+
+        bool UpdateMemberDetails(int Id , MemberToUpdateViewModel UpdatedMember );
     }
 }
