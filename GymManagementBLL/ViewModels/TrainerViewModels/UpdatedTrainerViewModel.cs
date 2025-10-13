@@ -1,17 +1,20 @@
-﻿using System;
+﻿using GymManagementDAL.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymManagementBLL.ViewModels.MemberViewModels
+namespace GymManagementBLL.ViewModels.TrainerViewModels
 {
-    public class MemberToUpdateViewModel
+    public class UpdatedTrainerViewModel
     {
-        public string Name { get; set; } = null!;
+        [Required(ErrorMessage = "Trainer Name Is Required")]
+        [StringLength(50 , MinimumLength = 2 , ErrorMessage = "Trainer Name Must Be Between 2 And 50 Char" )]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Trainer Name Can contain only letters And Spaces ")]
+        public string TrainName { get; set; } = null!;
 
-        public string? Photo {  get; set; }
 
         [Required(ErrorMessage = "Email Is Required")]
         [EmailAddress(ErrorMessage = "Email Is Invalid Format")]
@@ -22,7 +25,6 @@ namespace GymManagementBLL.ViewModels.MemberViewModels
         [Phone(ErrorMessage = "Phone Is Invalid Format")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^(010|012|011|015)\d{8}$", ErrorMessage = "Phone Number Must Be Valid Egyptian PhoneNumber")]
-
         public string Phone { get; set; } = null!;
 
         [Required(ErrorMessage = "Building Number is Required")]
@@ -38,5 +40,8 @@ namespace GymManagementBLL.ViewModels.MemberViewModels
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "City Can contain only letters And Spaces ")]
         public string City { get; set; } = null!;
 
+
+        [Required(ErrorMessage = "Specialization is Required")]
+        public Specialities Specialization { get; set; } 
     }
 }
