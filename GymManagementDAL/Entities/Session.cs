@@ -30,6 +30,7 @@ namespace GymManagementDAL.Entities
         #endregion
 
         public ICollection<MemberSession> SessionMember { get; set; } = null!;
-
+        public Trainer Trainer { get; set; }
+        public Category Category { get; internal set; }
     }
 }
