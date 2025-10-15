@@ -1,0 +1,24 @@
+﻿using AutoMapper;
+using GymManagementBLL.ViewModels.SessionViewModels;
+using GymManagementDAL.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GymManagementBLL
+{
+    public class MappingProfiles : Profile
+    {
+        public MappingProfiles()
+        {
+            CreateMap<Session, SessionViewModel>()
+                        .ForMember(dest => dest.CategoryName, Options => Options.MapFrom(scr => scr.Category.CategoryName))
+                        .ForMember(dest => dest.TrainerName, Options => Options.MapFrom(scr => scr.Trainer.Name))
+                        .ForMember(dest => dest.AvailableStoles, Options => Options.Ignore());
+                     
+        }
+    }
+}
+        
