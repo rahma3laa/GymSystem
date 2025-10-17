@@ -10,10 +10,11 @@ namespace GymManagementDAL.Repostiories.Interfaces
     public interface ISessionRepository 
     {
         IEnumerable<Session> GetAllSessionsWithTrainerAndCategory();
-
+        Session? GetById(int sessionId);
         int GetCountOfBookSlots(int SessionId);
 
         Session? GetSessionWithTrainerAndCategory(int sessionId);
+        void Update(Session session);
     }
 
 }

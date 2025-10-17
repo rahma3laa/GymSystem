@@ -38,5 +38,7 @@ namespace GymManagementDAL.Repostiories.Classes
                                       .Include(X => X.Category)
                                       .FirstOrDefault(X=>X.Id == sessionId);
         }
+
+     
     }
 }

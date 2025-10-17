@@ -16,6 +16,10 @@ namespace GymManagementBLL.Services
         SessionViewModel? GetSessionById(int sessionId);
 
         bool CreateSession(CreateSessionViewModel CreatedSession);
+
+        UpdateSessionViewModel? GetSessionToUpdate(int sessionId);
+
+        bool UpdateSession(UpdateSessionViewModel UpdatedSession , int sessionId);
        
     }
 }

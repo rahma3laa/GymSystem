@@ -20,6 +20,9 @@ namespace GymManagementBLL
                         .ForMember(dest => dest.AvailableStoles, Options => Options.Ignore());
 
             CreateMap<CreateSessionViewModel, Session>();
+
+            CreateMap<Session, UpdateSessionViewModel>();
+            CreateMap<Session, UpdateSessionViewModel>().ReverseMap();
         }
 
         

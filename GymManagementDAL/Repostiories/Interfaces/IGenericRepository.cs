@@ -16,7 +16,7 @@ namespace GymManagementDAL.Repostiories.Interfaces
 
         void Add(TEntity entity);
         void Update(TEntity entity);
-
+        
         void Delete(TEntity entity);
     }
 

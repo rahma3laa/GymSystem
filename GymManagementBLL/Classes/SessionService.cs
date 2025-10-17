@@ -17,6 +17,7 @@ namespace GymManagementBLL.Classes
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
+
         public SessionService(IUnitOfWork unitOfWork , IMapper mapper)
         {
            _unitOfWork = unitOfWork;
@@ -92,7 +93,59 @@ namespace GymManagementBLL.Classes
             return MappedSessions;
         }
 
+        public UpdateSessionViewModel? GetSessionToUpdate(int sessionId)
+        {
+            var Session = _unitOfWork.SessionRepository.GetById(sessionId);
+
+            if (!IsSessionAvailableForUpdating(Session!)) return null;
+
+            return _mapper.Map<UpdateSessionViewModel>(Session);
+
+
+            
+        }
+
+     
+
+        public bool UpdateSession(UpdateSessionViewModel UpdatedSession, int sessionId)
+        {
+            try
+            {
+                var Session = _unitOfWork.SessionRepository.GetById(sessionId);
+                if(!IsSessionAvailableForUpdating(Session!)) return false;
+                if(!IsTrainedExist(UpdatedSession.TrainerId)) return false;
+
+                if (!IsDateTimeValid(UpdatedSession.StartDate, UpdatedSession.EndDate)) return false;
+                _mapper.Map(UpdatedSession, Session);
+                Session!.UpdatedAt = DateTime.Now;
+
+                _unitOfWork.SessionRepository.Update(Session);
+                return _unitOfWork.SaveChanges() > 0;
+
+            }catch (Exception ex)
+            {
+                Console.WriteLine($"Updated Session Failed {ex}");
+                return false;
+            }
+        }
+
         #region Helper Method
+
+        private bool IsSessionAvailableForUpdating(Session session)
+        {
+            if(session is null) return false;
+            // if Completed
+            if(session.EndDate <DateTime.Now) return false;
+
+            // if Started
+            if(session.StartDate <= DateTime.Now) return false;
+
+            // If Has Active Booking
+            var HasActiveBooking=_unitOfWork.SessionRepository.GetCountOfBookSlots(session.Id) > 0;
+            if(HasActiveBooking) return false;
+
+            return true;
+        }
 
         private bool IsTrainedExist(int TrainerId)
         {
@@ -108,6 +161,8 @@ namespace GymManagementBLL.Classes
         {
             return StartDate < EndDate;
         }
+
+      
         #endregion
 
     }
