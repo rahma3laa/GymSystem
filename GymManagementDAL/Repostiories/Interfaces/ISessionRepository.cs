@@ -9,6 +9,7 @@ namespace GymManagementDAL.Repostiories.Interfaces
 {
     public interface ISessionRepository 
     {
+        void Delete(Session? session);
         IEnumerable<Session> GetAllSessionsWithTrainerAndCategory();
         Session? GetById(int sessionId);
         int GetCountOfBookSlots(int SessionId);
