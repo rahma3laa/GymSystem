@@ -3,6 +3,8 @@ using GymManagementDAL.Data.Context;
 using GymManagementDAL.Data.DataSeed;
 using GymManagementDAL.Repostiories.Classes;
 using GymManagementDAL.Repostiories.Interfaces;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -58,8 +60,15 @@ namespace GymManagementPL
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Home}/{action=Index}/{id:int?}")
                 .WithStaticAssets();
+
+            app.MapControllerRoute(
+                name: "Trainers",
+                pattern: "Coach/{action}",
+                defaults: new { controller = "Trainer" , action  = "Index"}
+
+                );
 
             app.Run();
         }
