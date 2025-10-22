@@ -43,7 +43,7 @@ namespace GymManagementDAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("GymManagementDAL.Entities.HealthRecord", b =>
@@ -118,7 +118,7 @@ namespace GymManagementDAL.Migrations
                     b.HasIndex("Phone")
                         .IsUnique();
 
-                    b.ToTable("Members", t =>
+                    b.ToTable("Members", null, t =>
                         {
                             t.HasCheckConstraint("GymUserValidEmailCheck", "Email LIKE '_%@_%._%'");
 
@@ -150,7 +150,7 @@ namespace GymManagementDAL.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("MembersSessions");
+                    b.ToTable("MembersSessions", (string)null);
                 });
 
             modelBuilder.Entity("GymManagementDAL.Entities.MemberShip", b =>
@@ -177,7 +177,7 @@ namespace GymManagementDAL.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("MembersShips");
+                    b.ToTable("MembersShips", (string)null);
                 });
 
             modelBuilder.Entity("GymManagementDAL.Entities.Plan", b =>
@@ -216,7 +216,7 @@ namespace GymManagementDAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Plans", t =>
+                    b.ToTable("Plans", null, t =>
                         {
                             t.HasCheckConstraint("PlandurationCheck", "DurationDays Between 1 and 365");
                         });
@@ -261,7 +261,7 @@ namespace GymManagementDAL.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Sessions", t =>
+                    b.ToTable("Sessions", null, t =>
                         {
                             t.HasCheckConstraint("SessionCheck", "Capacity Between 1 and 25");
 
@@ -318,7 +318,7 @@ namespace GymManagementDAL.Migrations
                     b.HasIndex("Phone")
                         .IsUnique();
 
-                    b.ToTable("Trainers", t =>
+                    b.ToTable("Trainers", null, t =>
                         {
                             t.HasCheckConstraint("GymUserValidEmailCheck", "Email LIKE '_%@_%._%'")
                                 .HasName("GymUserValidEmailCheck1");
@@ -362,7 +362,7 @@ namespace GymManagementDAL.Migrations
 
                             b1.HasKey("MemberId");
 
-                            b1.ToTable("Members");
+                            b1.ToTable("Members", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("MemberId");
@@ -454,7 +454,7 @@ namespace GymManagementDAL.Migrations
 
                             b1.HasKey("TrainerId");
 
-                            b1.ToTable("Trainers");
+                            b1.ToTable("Trainers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TrainerId");

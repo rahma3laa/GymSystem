@@ -49,7 +49,7 @@ namespace GymManagementBLL.Classes
 
         public IEnumerable<SessionViewModel> GetAllSessions()
         {
-            var Sessions = _unitOfWork.SessionRepository.GetAllSessionsWithTrainerAndCategory();
+            var Sessions = _unitOfWork.SessionRepository.GetAll();
             if (!Sessions.Any()) return [];
 
             //    return Sessions.Select(S => new SessionViewModel
@@ -68,7 +68,7 @@ namespace GymManagementBLL.Classes
             var MappedSessions=_mapper.Map<IEnumerable<Session> , IEnumerable<SessionViewModel>>(Sessions);
 
             foreach (var Session in MappedSessions)
-                Session.AvailableStoles = Session.Capacity - _unitOfWork.SessionRepository.GetCountOfBookSlots(Session.Id);
+                Session.AvailableStoles = Session.Capacity - _unitOfWork.SessionRepository.GetCountOfBookedSlots(Session.Id);
             return MappedSessions;
         }
 
@@ -89,7 +89,7 @@ namespace GymManagementBLL.Classes
 
             var MappedSessions = _mapper.Map<Session, SessionViewModel>(Sessions);
 
-            MappedSessions.AvailableStoles = MappedSessions.Capacity - _unitOfWork.SessionRepository.GetCountOfBookSlots(Sessions.Id);
+            MappedSessions.AvailableStoles = MappedSessions.Capacity - _unitOfWork.SessionRepository.GetCountOfBookedSlots(Sessions.Id);
             return MappedSessions;
         }
 
@@ -158,7 +158,7 @@ namespace GymManagementBLL.Classes
             //if Is Upcoming
             if(session.StartDate > DateTime.Now) return false;
             // If Has Active Booking
-            var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookSlots(session.Id) > 0;
+            var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) > 0;
             if (HasActiveBooking) return false;
 
             return true;
@@ -174,7 +174,7 @@ namespace GymManagementBLL.Classes
             if(session.StartDate <= DateTime.Now) return false;
 
             // If Has Active Booking
-            var HasActiveBooking=_unitOfWork.SessionRepository.GetCountOfBookSlots(session.Id) > 0;
+            var HasActiveBooking=_unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) > 0;
             if(HasActiveBooking) return false;
 
             return true;

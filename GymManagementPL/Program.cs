@@ -1,4 +1,6 @@
-using GymManagementBLL;
+﻿using GymManagementBLL;
+using GymManagementBLL.Classes;
+using GymManagementBLL.Services.Interface;
 using GymManagementDAL.Data.Context;
 using GymManagementDAL.Data.DataSeed;
 using GymManagementDAL.Repostiories.Classes;
@@ -30,9 +32,9 @@ namespace GymManagementPL
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
-            //builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            //builder.Services.AddScoped<IPlanReposatory, PlanRepository>();
+            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
             var app = builder.Build();
+
 
             #region Migrate Database - Data Seeding
             using var Scope = app.Services.CreateScope();
@@ -52,10 +54,26 @@ namespace GymManagementPL
                 app.UseHsts();
             }
 
+        
+
+            // 👇 لازم يكون هنا
+            app.UseStaticFiles();
+
+       
+            app.UseAuthorization();
+
+            app.MapDefaultControllerRoute();
+
+        
+
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+          
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.MapControllers();
+
+           
 
             app.MapStaticAssets();
             app.MapControllerRoute(

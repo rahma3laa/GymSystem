@@ -15,8 +15,8 @@ namespace GymManagementBLL
         public MappingProfiles()
         {
             CreateMap<Session, SessionViewModel>()
-                        .ForMember(dest => dest.CategoryName, Options => Options.MapFrom(scr => scr.Category.CategoryName))
-                        .ForMember(dest => dest.TrainerName, Options => Options.MapFrom(scr => scr.Trainer.Name))
+                        .ForMember(dest => dest.CategoryName, Options => Options.MapFrom(scr => scr.SessionCategory.CategoryName))
+                        .ForMember(dest => dest.TrainerName, Options => Options.MapFrom(scr => scr.SessionTrainer.Name))
                         .ForMember(dest => dest.AvailableStoles, Options => Options.Ignore());
 
             CreateMap<CreateSessionViewModel, Session>();

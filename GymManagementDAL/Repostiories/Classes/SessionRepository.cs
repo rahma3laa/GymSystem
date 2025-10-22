@@ -18,27 +18,28 @@ namespace GymManagementDAL.Repostiories.Classes
             _dbContext = dbContext;
         }
 
-       
 
-        public IEnumerable<Session> GetAllSessionsWithTrainerAndCategory()
+        public IEnumerable<Session> GetAllSessionsWithTrainerAndCategory(Func<Session, bool>? condition = null)
         {
-            return _dbContext.Sessions.Include(X => X.Trainer)
-                                       .Include(X=>X.Category)
-                                       .ToList();
+            if (condition is null)
+                return _dbContext.Sessions.Include(X => X.SessionTrainer)
+                    .Include(X => X.SessionCategory)
+                    .ToList();
+            else
+                return _dbContext.Sessions.Include(X => X.SessionTrainer)
+                    .Include(X => X.SessionCategory)
+                    .Where(condition).ToList();
         }
 
-        public int GetCountOfBookSlots(int SessionId)
+        public int GetCountOfBookedSlots(int SessionId)
         {
-            return _dbContext.MembersSessions.Count(X => X.SessionId == SessionId);
+            return _dbContext.MembersSessions.Where(X => X.SessionId == SessionId).Count();
         }
 
-        public Session? GetSessionWithTrainerAndCategory(int sessionId)
+        public Session? GetSessionWithTrainerAndCategory(int SessionId)
         {
-            return _dbContext.Sessions.Include(X => X.Trainer)
-                                      .Include(X => X.Category)
-                                      .FirstOrDefault(X=>X.Id == sessionId);
+            return _dbContext.Sessions.Include(X => X.SessionTrainer)
+                                      .Include(X => X.SessionCategory).FirstOrDefault(X => X.Id == SessionId);
         }
-
-     
     }
 }
