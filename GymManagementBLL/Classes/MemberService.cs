@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace GymManagementBLL.Classes
 {
-    internal class MemberService : IMemberService
-    {
+     public class MemberService : IMemberService
+     {
        
         public MemberService(IUnitOfWork unitOfWork , IMapper mapper)
         {

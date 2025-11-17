@@ -1,23 +1,40 @@
-﻿using GymManagementDAL.Entities;
+﻿using GymManagementBLL.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagementPL.Controllers
 {
     public class MemberController : Controller
     {
-        public IActionResult Index(int id)
+        private readonly IMemberService _memberService;
+        public MemberController(IMemberService memberService)
         {
-            //return RedirectToAction(nameof(GetMember));
-            return RedirectToRoute("Trainers" , new { action  = "GetTrainers" } );
+            _memberService = memberService;
         }
 
-        public ActionResult GetMember()
+
+
+        #region Index Get ALL Member
+        public ActionResult Index()
         {
-            return View();
+            var members = _memberService.GetAllMembers();
+            return View( members);
+        
+        
         }
-        public ActionResult CreateMember()
+        #endregion
+
+        #region Get Member Data
+        public ActionResult MemberDetails(int id)
         {
-            return View();
+            if (id <= 0)
+                return RedirectToAction(nameof(Index));
+            var member = _memberService.GetMemberDetails(id);
+            if(member is null)
+                return RedirectToAction(nameof(Index));
+            return View(member);
+
         }
+
+        #endregion
     }
 }

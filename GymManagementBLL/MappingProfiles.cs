@@ -97,7 +97,7 @@ namespace GymManagementBLL
 
             CreateMap<Trainer, TrainerViewModel>();
             CreateMap<Trainer , UpdatedTrainerViewModel>()
-                .ForMember(dest => dest, opt => opt.MapFrom(src => src.Address.Street))
+                .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Address.Street))
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Address.City))
                 .ForMember(dest => dest.BuildingNumber, opt => opt.MapFrom(src => src.Address.BuildingNumber));
 
