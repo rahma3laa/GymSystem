@@ -81,10 +81,11 @@ namespace GymManagementBLL.Classes
             {
                 ViewModel.MemberShipStartDate = ActiveMemberShip.CreatedAt.ToShortDateString();
                 ViewModel.MemberShipEndDate=ActiveMemberShip.EndDate.ToShortDateString();
+                var Plan = _UnitOfWork.GetRepository<Plan>().GetById(ActiveMemberShip.PlanId);
+                ViewModel.PlanName = Plan?.Name;
             }
 
-            var Plan = _UnitOfWork.GetRepository<Plan>().GetById(ActiveMemberShip.PlanId);
-            ViewModel.PlanName = Plan?.Name;
+           
 
             return ViewModel;
         }
