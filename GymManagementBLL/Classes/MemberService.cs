@@ -132,21 +132,19 @@ namespace GymManagementBLL.Classes
 
         public bool UpdateMemberDetails(int Id, MemberToUpdateViewModel UpdatedMember)
         {
-            try
-            {
-                
-                if (IsEmailExsits(UpdatedMember.Email) || IsPhoneExsits(UpdatedMember.Phone)) return false;
+            var emailExist = _UnitOfWork.GetRepository<Member>()
+                .GetAll(X => X.Email == UpdatedMember.Email && X.Id!=Id);
 
-                var Repo=_UnitOfWork.GetRepository<Member>();
-                var Member = Repo.GetById(Id);
-                if(Member is null) return false;
+            var PhoneExist = _UnitOfWork.GetRepository<Member>()
+                .GetAll(X => X.Phone == UpdatedMember.Phone && X.Id!=Id);
+            if(emailExist.Any() || PhoneExist.Any()) return false;
 
-                _mapper.Map(UpdatedMember, Member);
-                return _UnitOfWork.SaveChanges() > 0;            }
-            catch
-            {
-                return false;
-            }
+            var memberRepo=_UnitOfWork.GetRepository<Member>();
+            var Member = memberRepo.GetById(Id);
+            if (Member is null) return false;
+            _mapper.Map(UpdatedMember , Member);    
+            memberRepo.Update(Member);
+            return _UnitOfWork.SaveChanges() > 0;
         }
 
         #region Helper Method

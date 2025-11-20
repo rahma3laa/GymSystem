@@ -87,6 +87,45 @@ namespace GymManagementPL.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        #endregion
+        #region Edit Member
+        public ActionResult MemberEdit(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Id of Member Can Not Be 0 Or Negative Number";
+                return RedirectToAction(nameof(Index));
+
+            }
+            var member=_memberService.GetMemberToUpdate(id);
+            if(member is null)
+            {
+                TempData["ErrorMessage"] = " Member Not Found";
+                return RedirectToAction(nameof(Index));
+
+            }
+            return View(member);
+        }
+
+        [HttpPost]
+        public ActionResult MemberEdit([FromRoute]int id , MemberToUpdateViewModel MemberToEdit)
+        {
+           if(!ModelState.IsValid)
+                return View(nameof(Index));
+           var Result=_memberService.UpdateMemberDetails(id, MemberToEdit);
+            if(Result)
+            {
+                TempData["SuccessMessage"] = "Member Updated Successfully";
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Member  Failed To Updated ";
+
+            }
+            return RedirectToAction(nameof(Index));
+        }
         #endregion
     }
 }
