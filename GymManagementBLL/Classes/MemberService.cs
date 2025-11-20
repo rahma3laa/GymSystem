@@ -105,9 +105,13 @@ namespace GymManagementBLL.Classes
             if(Member is null) return false;
 
             var HasActiveMemberSessions = _UnitOfWork.GetRepository<MemberSession>()
-                      .GetAll(X => X.MemberId == MemberId && X.Session.StartDate > DateTime.Now).Any();
+                      .GetAll(X => X.MemberId == MemberId).Select(x=>x.SessionId);
 
-            if (HasActiveMemberSessions) return false;
+            var HasFutureSessions = _UnitOfWork.GetRepository<Session>().GetAll(
+                X=> HasActiveMemberSessions.Contains(X.Id) && X.StartDate > DateTime.Now).Any();
+
+
+            if (HasFutureSessions) return false;
 
             var MemberShipRepo=_UnitOfWork.GetRepository<MemberShip>();
             var MemberShips = MemberShipRepo.GetAll(X=>X.MemberId == MemberId);
