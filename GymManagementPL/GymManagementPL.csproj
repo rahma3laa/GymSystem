@@ -7,11 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\icon.svg" />
+    <Content Remove="wwwroot\images\Theo Vance.jpg" />
+    <Content Remove="wwwroot\images\TheoVance.jpg" />
+    <Content Remove="wwwroot\User.jpg" />
+    <Content Remove="wwwroot\Yellow And Brown Modern Truck Rental Instagram Post.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
