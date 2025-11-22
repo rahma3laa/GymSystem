@@ -6,6 +6,7 @@ using GymManagementDAL.Data.DataSeed;
 using GymManagementDAL.Entities;
 using GymManagementDAL.Repostiories.Classes;
 using GymManagementDAL.Repostiories.Interfaces;
+using GymManagmentBLL.Service.Classes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,7 @@ namespace GymManagementPL
             builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
             builder.Services.AddScoped<IMemberService, MemberService>();
+            builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
             var app = builder.Build();
 
