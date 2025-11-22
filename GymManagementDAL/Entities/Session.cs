@@ -19,14 +19,14 @@ namespace GymManagementDAL.Entities
         #region Session - Category
 
         public int CategoryId {  get; set; }
-        public Category SessionCategory { get; set; } = null!;
+        public Category Category { get; set; } = null!;
         #endregion
 
         #region Session - Trainer
         
         public int TrainerId {  get; set; }
 
-        public Trainer SessionTrainer { get; set; } = null!;
+        public Trainer Trainer { get; set; } = null!;
         #endregion
 
         public ICollection<MemberSession> MemberSessions { get; set; } = null!;

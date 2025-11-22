@@ -22,6 +22,7 @@ namespace GymManagementBLL.Services
         bool UpdateSession(UpdateSessionViewModel UpdatedSession , int sessionId);
 
         bool RemoveSession(int sessionId);
-       
+        
+
     }
 }

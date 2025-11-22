@@ -24,25 +24,28 @@ namespace GymManagementBLL.Classes
             _mapper = mapper;
         }
 
-        public bool CreateSession(CreateSessionViewModel CreatedSession)
+        public bool CreateSession(CreateSessionViewModel session)
         {
             try
             {
-                if (!IsTrainedExist(CreatedSession.TrainerId)) return false;
+                if (
+                    !IsTrainedExist(session.TrainerId)
+                    || !IsCategoryExist(session.CategoryId)
+                    || !IsDateTimeValid(session.StartDate, session.EndDate)
+                )
+                    return false;
+                // Business Rule
+                if (session.Capacity > 25 || session.Capacity < 0)
+                    return false;
 
-                if (!IsCategoryExist(CreatedSession.CategoryId)) return false;
+                // Info to be noted
+                var mappedSession = _mapper.Map<Session>(session);
 
-                if (!IsDateTimeValid(CreatedSession.StartDate, CreatedSession.EndDate)) return false;
-
-                if (CreatedSession.Capacity > 25 || CreatedSession.Capacity < 0) return false;
-
-                var SessionEntity = _mapper.Map<Session>(CreatedSession);
-
-                _unitOfWork.GetRepository<Session>().Add(SessionEntity);
+                _unitOfWork.SessionRepository.Add(mappedSession);
                 return _unitOfWork.SaveChanges() > 0;
-            }catch(Exception ex)
+            }
+            catch (Exception)
             {
-                Console.WriteLine($"Create Session Failed {ex}");
                 return false;
             }
         }
