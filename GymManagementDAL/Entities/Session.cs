@@ -29,7 +29,7 @@ namespace GymManagementDAL.Entities
         public Trainer SessionTrainer { get; set; } = null!;
         #endregion
 
-        public ICollection<MemberSession> SessionMember { get; set; } = null!;
-
+        public ICollection<MemberSession> MemberSessions { get; set; } = null!;
+ 
     }
 }

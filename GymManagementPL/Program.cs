@@ -1,6 +1,14 @@
+﻿using GymManagementBLL;
+using GymManagementBLL.Classes;
+using GymManagementBLL.Services.Interface;
 using GymManagementDAL.Data.Context;
+using GymManagementDAL.Data.DataSeed;
+using GymManagementDAL.Entities;
 using GymManagementDAL.Repostiories.Classes;
 using GymManagementDAL.Repostiories.Interfaces;
+using GymManagmentBLL.Service.Classes;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -22,15 +30,27 @@ namespace GymManagementPL
 
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddScoped<IMemberRepository, MemberRepository>();
-            builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
-            builder.Services.AddScoped<IPlanReposatory, PlanRepository>();
-            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
-            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-            builder.Services.AddScoped<IHealthRecordRepository , HealthRecordRepository>();
 
-            builder.Services.AddScoped<IPlanReposatory, IPlanReposatory>();
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
+            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+            builder.Services.AddScoped<IMemberService, MemberService>();
+            builder.Services.AddScoped<IPlanService, PlanService>();
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
             var app = builder.Build();
+
+
+            #region Migrate Database - Data Seeding
+            using var Scope = app.Services.CreateScope();
+            var dbContext = Scope.ServiceProvider.GetRequiredService<GymDbContext>();
+            
+            var PendingMigrations= dbContext.Database.GetPendingMigrations();
+            if (PendingMigrations?.Any() ?? false) 
+                dbContext.Database.Migrate();
+            GymDbContextSeeding.SeedData(dbContext);
+            #endregion
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -40,16 +60,39 @@ namespace GymManagementPL
                 app.UseHsts();
             }
 
+        
+
+            // 👇 لازم يكون هنا
+            app.UseStaticFiles();
+
+       
+            app.UseAuthorization();
+
+            app.MapDefaultControllerRoute();
+
+        
+
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+          
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.MapControllers();
+
+           
 
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Home}/{action=Index}/{id:int?}")
                 .WithStaticAssets();
+
+            app.MapControllerRoute(
+                name: "Trainers",
+                pattern: "Coach/{action}",
+                defaults: new { controller = "Trainer" , action  = "Index"}
+
+                );
 
             app.Run();
         }
