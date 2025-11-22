@@ -1,4 +1,5 @@
 ﻿using GymManagementDAL.Entities;
+using GymManagementDAL.Repostiories.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +8,13 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Repostiories.Interfaces
 {
-    public interface ISessionRepository
+    public interface ISessionRepository : IGenericRepository<Session>
+
     {
-        //Get All
+        IEnumerable<Session> GetAllSessionsWithTrainerAndCategory();
+        Session? GetSessionWithTrainerAndCategory(int SessionId);
 
-        IEnumerable<Session> GetAll();
-
-        //Get By Id 
-
-        Session GetById(int id);
-
-        //Create 
-        int Add(Session session);
-
-        int Update(Session session);
-
-        int Delete(Session session);
+        int GetCountOfBookedSlots(int SessionId);
     }
+
 }
