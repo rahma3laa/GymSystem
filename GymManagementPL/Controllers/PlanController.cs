@@ -20,6 +20,7 @@ namespace GymManagementPL.Controllers
             {
                 var plans = _planService.GetAllPlans();
                 return View(plans);
+
             }
             public ActionResult Details(int id)
             {
